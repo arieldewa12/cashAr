@@ -6,9 +6,8 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/lib/pq"
 
-	"logistix/models"
+	"cashAr/models"
 
 	"github.com/astaxie/beego/orm"
 )
@@ -39,5 +38,6 @@ func init() {
 	orm.RegisterDataBase("default", "mysql", connString, max_idle_conn, max_conn)
 
 	//Register all models here
-	orm.RegisterModel(new(models.History))
+	orm.RegisterModel(new(models.CashIn))
+	orm.RegisterModel(new(models.CashOut))
 }
