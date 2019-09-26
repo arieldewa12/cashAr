@@ -1,5 +1,7 @@
 package models
 
+import "github.com/astaxie/beego/orm"
+
 type CashOut struct {
 	ID               int     `orm:"auto;ok;column(id)"`
 	Client           string  `valid:"Required"`
@@ -18,4 +20,35 @@ type CashOut struct {
 	TaxInvoiceNumber int64   `valid:"Required"`
 	TaxInvoiceDate   int64   `valid:"Required"`
 	CompanyName      string  `valid:"Required"`
+}
+
+type CashOutOrmer interface {
+	Create() error
+	Read() error
+	Update() error
+	Delete() error
+}
+
+type BeegoCashOutOrmer struct {
+	ormer orm.Ormer
+}
+
+func NewCashOutOrmer(ormer orm.Ormer) CashOutOrmer {
+	return &BeegoCashOutOrmer{ormer: ormer}
+}
+
+func (c *BeegoCashOutOrmer) Create() error {
+	return nil
+}
+
+func (c *BeegoCashOutOrmer) Read() error {
+	return nil
+}
+
+func (c *BeegoCashOutOrmer) Update() error {
+	return nil
+}
+
+func (C *BeegoCashOutOrmer) Delete() error {
+	return nil
 }
