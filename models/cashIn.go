@@ -72,19 +72,15 @@ func (o *BeegoCashInOrmer) Read() ([]CashIn, error) {
 }
 
 func (o *BeegoCashInOrmer) Update(cashIns *CashIn) error {
-	o.ormer.Begin()
 	_, err := o.ormer.Update(cashIns)
 	if err != nil {
-		o.ormer.Rollback()
 		return fmt.Errorf("Cause of Error at Update Cash In: ", err)
 	}
-	o.ormer.Commit()
 
 	return nil
 }
 
 func (o *BeegoCashInOrmer) Delete(cashInID int) error {
-	o.ormer.Begin()
 	deleteCashIn := CashIn{
 		ID: cashInID,
 	}
@@ -93,6 +89,6 @@ func (o *BeegoCashInOrmer) Delete(cashInID int) error {
 	if err != nil {
 		return fmt.Errorf("Cause of Error at Delete Cash In: ", err)
 	}
-	o.ormer.Commit()
+
 	return nil
 }
