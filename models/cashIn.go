@@ -12,14 +12,15 @@ type CashIn struct {
 	Amount      float64 `valid:"Required"`
 	Description string  `valid:"Required"`
 	Details     string  `valid:"Required"`
-	Date        int64   `valid:"Required"`
+	Date        string  `valid:"Required"`
 }
 
 type CashInOrmer interface {
-	Create(date int64, from string, amount float64, desc string, details string) error
+	Create(date string, from string, amount float64, desc string, details string) error
 	Read() ([]CashIn, error)
 	Update(cashIns *CashIn) error
 	Delete(CashInID int) error
+	AddCashInFromCSV(cashIn []CashIn) error
 }
 
 type BeegoCashInOrmer struct {
@@ -30,7 +31,7 @@ func NewCashInOrmer(ormer orm.Ormer) CashInOrmer {
 	return &BeegoCashInOrmer{ormer: ormer}
 }
 
-func (o *BeegoCashInOrmer) Create(date int64, from string, amount float64, desc string, details string) error {
+func (o *BeegoCashInOrmer) Create(date string, from string, amount float64, desc string, details string) error {
 	createCashIns := CashIn{
 		Date:        date,
 		From:        from,
@@ -90,5 +91,15 @@ func (o *BeegoCashInOrmer) Delete(cashInID int) error {
 		return fmt.Errorf("Cause of Error at Delete Cash In: ", err)
 	}
 
+	return nil
+}
+
+func (o *BeegoCashInOrmer) AddCashInFromCSV(cashIn []CashIn) error {
+	for _, value := range cashIn {
+		err := o.Create(value.Date, "", value.Amount, value.Description, "")
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }

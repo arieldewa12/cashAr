@@ -18,7 +18,7 @@ type CashOut struct {
 	Dpp              float64 `valid:"Required"`
 	Ppn              float64 `valid:"Required"`
 	TaxInvoiceNumber int64   `valid:"Required"`
-	TaxInvoiceDate   int64   `valid:"Required"`
+	TaxInvoiceDate   string  `valid:"Required"`
 	CompanyName      string  `valid:"Required"`
 }
 
