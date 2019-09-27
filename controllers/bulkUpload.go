@@ -103,7 +103,7 @@ func (ths *BulkUploadController) BulkUploadCash() error {
 		return fmt.Errorf("[AddCashInFromCSV] Error Add CashIn from CSV Cause : %v", err)
 	}
 
-	err = ths.cashInOrmer.AddCashOutFromCSV(bulkUploadCashOut)
+	err = ths.cashOutOrmer.AddCashOutFromCSV(bulkUploadCashOut)
 	if err != nil {
 		return fmt.Errorf("[AddCashOutFromCSV] Error Add CashOut from CSV/.h. Cause : %v", err)
 	}

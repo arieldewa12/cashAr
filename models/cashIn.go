@@ -21,6 +21,7 @@ type CashInOrmer interface {
 	Update(cashIns *CashIn) error
 	Delete(CashInID int) error
 	AddCashInFromCSV(cashIn []CashIn) error
+	GetCashInTotalByDate(datSstart  int64, dateEnd int64) error 
 }
 
 type BeegoCashInOrmer struct {
@@ -102,4 +103,8 @@ func (o *BeegoCashInOrmer) AddCashInFromCSV(cashIn []CashIn) error {
 		}
 	}
 	return nil
+}
+
+func (o *BeegoCashInOrmer) GetCashInTotalByDate(dateStart int64 , dateEnd int64){
+	
 }
