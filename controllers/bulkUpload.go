@@ -26,6 +26,15 @@ func (ths BulkUploadController) Prepare() {
 	ths.cashOutOrmer = models.NewCashOutOrmer(ormer)
 }
 
+func (ths *BulkUploadController) Get() {	
+	ths.TplName = "bulk_upload_post.html"
+}
+
+func (ths *BulkUploadController) Post() {
+	fmt.Printf("sdsd")
+	ths.Redirect("/list_bulk", 200)
+}
+
 // @router / [post]
 func (ths *BulkUploadController) BulkUploadCash() error {
 

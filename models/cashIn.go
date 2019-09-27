@@ -105,6 +105,6 @@ func (o *BeegoCashInOrmer) AddCashInFromCSV(cashIn []CashIn) error {
 	return nil
 }
 
-func (o *BeegoCashInOrmer) GetCashInTotalByDate(dateStart int64 , dateEnd int64){
-	
+func (o *BeegoCashInOrmer) GetCashInTotalByDate(dateStart int64 , dateEnd int64) error{
+	return nil
 }

@@ -22,4 +22,5 @@ func init() {
 	// beego.AddNamespace(nsv1)
 	beego.Router("/", &controllers.DashboardController{})
 	beego.Router("/bulk_upload", &controllers.BulkUploadController{})
+	beego.Router("/list_bulk", &controllers.ListBulkController{})
 }
