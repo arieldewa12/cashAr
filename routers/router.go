@@ -7,12 +7,19 @@ import (
 )
 
 func init() {
-	nsv1 := beego.NewNamespace("/v1",
-		beego.NSNamespace("/bulk_upload",
-			beego.NSInclude(
-				&controllers.BulkUploadController{},
-			),
-		),
-	)
-	beego.AddNamespace(nsv1)
+	// nsv1 := beego.NewNamespace("/v1",
+	// 	beego.NSNamespace("/bulk_upload",
+	// 		beego.NSInclude(
+	// 			&controllers.BulkUploadController{},
+	// 		),
+	// 	),
+	// 	beego.NSNamespace("/",
+	// 		beego.NSInclude(
+	// 			&controllers.MainController{},
+	// 		),
+	// 	),
+	// )
+	// beego.AddNamespace(nsv1)
+	beego.Router("/", &controllers.MainController{})
+	beego.Router("/bulk_upload", &controllers.BulkUploadController{})
 }

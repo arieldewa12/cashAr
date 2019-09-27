@@ -25,14 +25,14 @@ func init() {
 	max_timeout := 3
 	databaseConfig := databaseConfig{
 		Username: "root",
-		Password: "apa",
-		Host:     "mysql",
-		Name:     "root",
+		Password: "root",
+		Host:     "db",
+		Name:     "finance",
 	}
 
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 
-	connString := fmt.Sprintf("mysql://%s:%s@%s/%s?connect_timeout=%s&sslmode=disable", databaseConfig.Username, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name, strconv.Itoa(max_timeout))
+	connString := fmt.Sprintf("mysql://%s:%s@%s/%s?connect_timeout=%s", databaseConfig.Username, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name, strconv.Itoa(max_timeout))
 	orm.DefaultTimeLoc = time.UTC
 
 	orm.RegisterDataBase("default", "mysql", connString, max_idle_conn, max_conn)
