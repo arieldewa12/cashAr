@@ -1,6 +1,10 @@
 package models
 
-import "github.com/astaxie/beego/orm"
+import (
+	"fmt"
+
+	"github.com/astaxie/beego/orm"
+)
 
 type CashOut struct {
 	ID               int     `orm:"auto;ok;column(id)"`
@@ -23,10 +27,10 @@ type CashOut struct {
 }
 
 type CashOutOrmer interface {
-	Create() error
-	Read() error
-	Update() error
-	Delete() error
+	Create(client string, invoice float64, pv string, accNum string, to string, bank string, accNumTo string, amount float64, bnkCharge float64, journal string, doc string, dpp float64, ppn float64, taxInvNum int64, taxInvDate string, company string) error
+	Read() ([]CashOut, error)
+	Update(cashOut *CashOut) error
+	Delete(cashOutID int) error
 }
 
 type BeegoCashOutOrmer struct {
@@ -37,18 +41,75 @@ func NewCashOutOrmer(ormer orm.Ormer) CashOutOrmer {
 	return &BeegoCashOutOrmer{ormer: ormer}
 }
 
-func (c *BeegoCashOutOrmer) Create() error {
+func (o *BeegoCashOutOrmer) Create(client string, invoice float64, pv string, accNum string, to string, bank string, accNumTo string, amount float64, bnkCharge float64, journal string, doc string, dpp float64, ppn float64, taxInvNum int64, taxInvDate string, company string) error {
+	createCashOuts := CashOut{
+		Client:           client,
+		Invoice:          invoice,
+		Pv:               pv,
+		AccountNumber:    accNum,
+		To:               to,
+		Bank:             bank,
+		AccountNumberTo:  accNumTo,
+		Amount:           amount,
+		BankCharge:       bnkCharge,
+		Journal:          journal,
+		Document:         doc,
+		Dpp:              dpp,
+		Ppn:              ppn,
+		TaxInvoiceNumber: taxInvNum,
+		TaxInvoiceDate:   taxInvDate,
+		CompanyName:      company,
+	}
+
+	err := o.ormer.Read(&createCashOuts)
+	if err != nil {
+		return fmt.Errorf("Cant Read At Create, cause: ", err)
+	}
+	if err != orm.ErrNoRows {
+		_, err := o.ormer.Update(&createCashOuts)
+		if err != nil {
+			return fmt.Errorf("Error Updating")
+		}
+	}
+	if err == orm.ErrNoRows {
+		_, err := o.ormer.Insert(&createCashOuts)
+		if err != nil {
+			return fmt.Errorf("Error Inserting")
+		}
+	}
 	return nil
 }
 
-func (c *BeegoCashOutOrmer) Read() error {
+func (o *BeegoCashOutOrmer) Read() ([]CashOut, error) {
+	var cashOuts []CashOut
+	err := o.ormer.Read(&cashOuts, "")
+	if err == orm.ErrNoRows {
+		fmt.Println("Cause of Error: %v", err)
+		return nil, nil
+	} else if err != nil {
+		return nil, fmt.Errorf("Cant read from DB")
+	}
+
+	return cashOuts, nil
+}
+
+func (o *BeegoCashOutOrmer) Update(cashOut *CashOut) error {
+	_, err := o.ormer.Update(cashOut)
+	if err != nil {
+		return fmt.Errorf("Cause of Error at Update Cash Out: ", err)
+	}
 	return nil
 }
 
-func (c *BeegoCashOutOrmer) Update() error {
-	return nil
-}
+func (o *BeegoCashOutOrmer) Delete(cashOutID int) error {
+	deleteCashOut := CashOut{
+		ID: cashOutID,
+	}
 
-func (C *BeegoCashOutOrmer) Delete() error {
+	_, err := o.ormer.Delete(&deleteCashOut)
+	if err != nil {
+		return fmt.Errorf("Cause of Error at Delete Cash In: ", err)
+	}
+
 	return nil
 }

@@ -1,15 +1,12 @@
 package registration
 
 import (
+	"cashAr/models"
 	"fmt"
-	"strconv"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
-
-	"cashAr/models"
-
 	"github.com/astaxie/beego/orm"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type databaseConfig struct {
@@ -20,22 +17,21 @@ type databaseConfig struct {
 }
 
 func init() {
-	max_conn := 30
-	max_idle_conn := 30
-	max_timeout := 3
+	// max_conn := 30
+	// max_idle_conn := 30
+	// max_timeout := 3
 	databaseConfig := databaseConfig{
 		Username: "root",
-		Password: "apa",
+		Password: "",
 		Host:     "mysql",
 		Name:     "root",
 	}
 
-	orm.RegisterDriver("mysql", orm.DRMySQL)
-
-	connString := fmt.Sprintf("mysql://%s:%s@%s/%s?connect_timeout=%s&sslmode=disable", databaseConfig.Username, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name, strconv.Itoa(max_timeout))
+	connString := fmt.Sprintf(`%s:%s@/%s?charset=utf8`, databaseConfig.Username, databaseConfig.Password, databaseConfig.Name)
+	//connString := fmt.Sprintf("mysql://%s:%s@%s/%s?connect_timeout=%s&sslmode=disable", databaseConfig.Username, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name, strconv.Itoa(max_timeout))
 	orm.DefaultTimeLoc = time.UTC
 
-	orm.RegisterDataBase("default", "mysql", connString, max_idle_conn, max_conn)
+	orm.RegisterDataBase("default", "mysql", connString)
 
 	//Register all models here
 	orm.RegisterModel(new(models.CashIn))
