@@ -31,6 +31,7 @@ type CashOutOrmer interface {
 	Read() ([]CashOut, error)
 	Update(cashOut *CashOut) error
 	Delete(cashOutID int) error
+
 }
 
 type BeegoCashOutOrmer struct {
@@ -111,5 +112,15 @@ func (o *BeegoCashOutOrmer) Delete(cashOutID int) error {
 		return fmt.Errorf("Cause of Error at Delete Cash In: ", err)
 	}
 
+	return nil
+}
+
+func (o *BeegoCashOutOrmer) AddCashOutFromCSV(CashOut []CashOut) error {
+	for _, value := range CashOut {
+		err := o.Create(value.Date, "", value.Amount, value.Description, "")
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }

@@ -29,6 +29,9 @@ func init() {
 
 	connString := fmt.Sprintf(`%s:%s@/%s?charset=utf8`, databaseConfig.Username, databaseConfig.Password, databaseConfig.Name)
 	//connString := fmt.Sprintf("mysql://%s:%s@%s/%s?connect_timeout=%s&sslmode=disable", databaseConfig.Username, databaseConfig.Password, databaseConfig.Host, databaseConfig.Name, strconv.Itoa(max_timeout))
+
+	orm.RegisterDriver("mysql", orm.DRMySQL)
+
 	orm.DefaultTimeLoc = time.UTC
 
 	orm.RegisterDataBase("default", "mysql", connString)
